@@ -1,0 +1,14 @@
+diff --git a/lib/bufferwriter.js b/lib/bufferwriter.js
+index 92e634353408bdb2b7519a35f5fcaff4d3d2f3ba..a916f3ebfe23451891bd63dfb83c913274b51e74 100644
+--- a/lib/bufferwriter.js
++++ b/lib/bufferwriter.js
+@@ -4,8 +4,7 @@ var Qap = require('qap');
+ 
+ var BufferConsumer = require('./bufferconsumer');
+ var BufferWriter = module.exports = function (size) {
+-  this.buf = new Buffer(size || 512);
+-  this.buf.fill(0);
++  this.buf = Buffer.alloc(size || 8192);
+   this.offset = 0;
+ };
+ 

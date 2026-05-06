@@ -1,3 +1,4 @@
+// @ts-ignore - no types available for mpris-service
 import Player from 'mpris-service';
 
 export default class mpris {

@@ -159,7 +159,12 @@ export default class RAOP {
    * Runs on app ready
    */
   async onReady(win: any): Promise<void> {
-    this.u = (await import("airtunes2")).default;
+    try {
+      this.u = (await import("airtunes2")).default;
+    } catch (e) {
+      console.warn("airtunes2 native module unavailable, AirPlay disabled:", e);
+      return;
+    }
     this._win = win;
 
     electron.ipcMain.on("getKnownAirplayDevices", (event) => {

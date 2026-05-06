@@ -34,7 +34,7 @@ app.on("ready", async () => {
     // @ts-ignore
     (await import("vue-devtools")).default.install();
   }
-  components.whenReady().then(async () => {
+  const startWindow = async () => {
     const bw = new BrowserWindow();
     console.log("[Cider] Creating Window.");
     const win = await bw.createWindow();
@@ -43,7 +43,11 @@ app.on("ready", async () => {
       console.log(gpuInfo);
     });
 
-    console.log("[Cider][Widevine] Status:", components.status());
+    try {
+      console.log("[Cider][Widevine] Status:", components.status());
+    } catch (e) {
+      console.warn("[Cider][Widevine] unavailable:", e);
+    }
     Cider.bwCreated();
     win.on("ready-to-show", () => {
       console.debug("[Cider] Window is Ready.");
@@ -52,7 +56,14 @@ app.on("ready", async () => {
         win.show();
       }
     });
-  });
+  };
+
+  try {
+    await components.whenReady();
+  } catch (e) {
+    console.warn("[Cider][Widevine] components.whenReady failed, continuing without DRM:", e);
+  }
+  await startWindow();
 });
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

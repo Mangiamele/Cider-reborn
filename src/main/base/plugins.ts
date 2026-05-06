@@ -1,7 +1,7 @@
 import {app} from "electron";
 import { existsSync, lstatSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { utils } from "./utils.js";
 
 //
@@ -40,7 +40,7 @@ export class Plugins {
     if (existsSync(this.basePluginsPath)) {
       readdirSync(this.basePluginsPath).forEach(async (file) => {
         if (file.endsWith(".ts") || file.endsWith(".js")) {
-          const plugin = (await import(join(this.basePluginsPath, file))).default;
+          const plugin = (await import(pathToFileURL(join(this.basePluginsPath, file)).href)).default;
           if (plugins[file] || plugin.name in plugins) {
             console.log(`[${plugin.name}] Plugin already loaded / Duplicate Class Name`);
           } else {
@@ -55,7 +55,7 @@ export class Plugins {
         // Plugins V1
         if (file.endsWith(".ts") || file.endsWith(".js")) {
           if (!app.isPackaged) {
-            const plugin = (await import(join(this.userPluginsPath, file))).default;
+            const plugin = (await import(pathToFileURL(join(this.userPluginsPath, file)).href)).default;
             file = file.replace(".ts", "").replace(".js", "");
             if (plugins[file] || plugin in plugins) {
               console.log(`[${plugin.name}] Plugin already loaded / Duplicate Class Name`);
@@ -63,7 +63,7 @@ export class Plugins {
               plugins[file] = new plugin(utils);
             }
           } else {
-            const plugin = await import(join(this.userPluginsPath, file));
+            const plugin = await import(pathToFileURL(join(this.userPluginsPath, file)).href);
             file = file.replace(".ts", "").replace(".js", "");
             if (plugins[file] || plugin in plugins) {
               console.log(`[${plugin.name}] Plugin already loaded / Duplicate Class Name`);
@@ -76,8 +76,8 @@ export class Plugins {
         else if (lstatSync(join(this.userPluginsPath, file)).isDirectory()) {
           const pluginPath = join(this.userPluginsPath, file);
           if (existsSync(join(pluginPath, "package.json"))) {
-            const pluginPackage = await import(join(pluginPath, "package.json"));
-            const plugin = await import(join(pluginPath, pluginPackage.main));
+            const pluginPackage = await import(pathToFileURL(join(pluginPath, "package.json")).href, { assert: { type: "json" } });
+            const plugin = await import(pathToFileURL(join(pluginPath, pluginPackage.main)).href);
             if (plugins[plugin.name] || plugin.name in plugins) {
               console.log(`[${plugin.name}] Plugin already loaded / Duplicate Class Name`);
             } else {
