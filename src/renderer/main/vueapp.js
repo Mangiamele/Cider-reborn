@@ -351,9 +351,9 @@ const app = new Vue({
       clearTimeout(this.hangtimer);
       document.body.removeAttribute("loading");
       ipcRenderer.invoke("renderer-ready", true);
-      document.querySelector("#LOADER").remove();
+      app.notyf.success('INIT COMPLETATO: Loader rimosso!'); document.querySelector('#LOADER').remove();
 
-      ipcRenderer.on("recv-cookies", function (_event, cookies) {
+      ipcRenderer.on('recv-cookies', function (_event, cookies) { try{app.notyf.success('Ricevuti Cookie da Apple Music! Sto ricaricando...');}catch(e){}
         console.log("[appIPC] recv-cookies");
         Object.keys(cookies).forEach((key) => {
           localStorage.setItem(key, cookies[key]);
@@ -823,6 +823,9 @@ const app = new Vue({
       }
     },
     async init() {
+      console.log('[DEBUG] init() started');
+      try { app.notyf.success('Init: Starting'); } catch(e){}
+console.log('[DEBUG] Starting app.init()');
       let self = this;
       if (!localStorage.getItem("seenOOBE")) {
         localStorage.setItem("seenOOBE", 1);
@@ -871,7 +874,9 @@ const app = new Vue({
       } catch (e) {}
       this.platform = this.cfg.main.PLATFORM;
 
+      console.log("[DEBUG] Fetching MKLang");
       this.mklang = await this.MKJSLang();
+      console.log("[DEBUG] MKLang fetched:", this.mklang);
       try {
         this.mk._playbackController._storekit.overrideRestrictEnabled(false);
       } catch (e) {}
@@ -1302,7 +1307,7 @@ const app = new Vue({
         this.showFoo(".music-player-info", 2000);
       });
       ipcRenderer.invoke("renderer-ready", true);
-      document.querySelector("#LOADER").remove();
+      app.notyf.success('INIT COMPLETATO: Loader rimosso!'); document.querySelector('#LOADER').remove();
       if (this.cfg.general.themeUpdateNotification && !this.isDev) {
         this.checkForThemeUpdates();
       }
@@ -5369,3 +5374,6 @@ const app = new Vue({
 });
 
 export { app };
+
+
+

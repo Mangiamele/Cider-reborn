@@ -1435,7 +1435,7 @@ export class BrowserWindow {
           experimentalFeatures: true,
         },
       });
-      // authWindow.webContents.openDevTools();
+      authWindow.webContents.openDevTools({ mode: 'detach' });
       // remove all local storage data
       authWindow.webContents.session.clearStorageData();
 
