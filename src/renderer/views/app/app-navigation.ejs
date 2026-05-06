@@ -27,7 +27,7 @@
               </div>
             </template>
             <template v-else>
-              <div @click="mk.authorize()">
+              <div @click="$root.ipcRenderer.send('auth-window')">
                 {{ $root.getLz("term.login") }}
               </div>
             </template>

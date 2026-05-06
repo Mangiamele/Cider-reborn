@@ -93,7 +93,7 @@ importers:
         version: 1.3.1
       upnp-mediarenderer-client:
         specifier: github:vapormusic/node-upnp-mediarenderer-client
-        version: git+ssh://git@github.com/vapormusic/node-upnp-mediarenderer-client.git#94b3a9de121c36a7951ed54d40a2ebc89b9a5dac
+        version: https://github.com/vapormusic/node-upnp-mediarenderer-client.git#94b3a9de121c36a7951ed54d40a2ebc89b9a5dac
       v8-compile-cache:
         specifier: ^2.4.0
         version: 2.4.0
@@ -4975,12 +4975,12 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
-  upnp-device-client@git+ssh://git@github.com/vapormusic/node-upnp-device-client.git#371819a856573e3624768bd0a113ac6dc084053d:
-    resolution: {commit: 371819a856573e3624768bd0a113ac6dc084053d, repo: git+ssh://git@github.com/vapormusic/node-upnp-device-client.git, type: git}
+  upnp-device-client@https://github.com/vapormusic/node-upnp-device-client.git#371819a856573e3624768bd0a113ac6dc084053d:
+    resolution: {commit: 371819a856573e3624768bd0a113ac6dc084053d, repo: https://github.com/vapormusic/node-upnp-device-client.git, type: git}
     version: 1.0.2
 
-  upnp-mediarenderer-client@git+ssh://git@github.com/vapormusic/node-upnp-mediarenderer-client.git#94b3a9de121c36a7951ed54d40a2ebc89b9a5dac:
-    resolution: {commit: 94b3a9de121c36a7951ed54d40a2ebc89b9a5dac, repo: git+ssh://git@github.com/vapormusic/node-upnp-mediarenderer-client.git, type: git}
+  upnp-mediarenderer-client@https://github.com/vapormusic/node-upnp-mediarenderer-client.git#94b3a9de121c36a7951ed54d40a2ebc89b9a5dac:
+    resolution: {commit: 94b3a9de121c36a7951ed54d40a2ebc89b9a5dac, repo: https://github.com/vapormusic/node-upnp-mediarenderer-client.git, type: git}
     version: 1.4.0
 
   uri-js@4.4.1:
@@ -11134,7 +11134,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  upnp-device-client@git+ssh://git@github.com/vapormusic/node-upnp-device-client.git#371819a856573e3624768bd0a113ac6dc084053d:
+  upnp-device-client@https://github.com/vapormusic/node-upnp-device-client.git#371819a856573e3624768bd0a113ac6dc084053d:
     dependencies:
       concat-stream: 1.6.2
       debug: 2.6.9(supports-color@6.1.0)
@@ -11143,11 +11143,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  upnp-mediarenderer-client@git+ssh://git@github.com/vapormusic/node-upnp-mediarenderer-client.git#94b3a9de121c36a7951ed54d40a2ebc89b9a5dac:
+  upnp-mediarenderer-client@https://github.com/vapormusic/node-upnp-mediarenderer-client.git#94b3a9de121c36a7951ed54d40a2ebc89b9a5dac:
     dependencies:
       debug: 2.6.9(supports-color@6.1.0)
       elementtree: 0.1.7
-      upnp-device-client: git+ssh://git@github.com/vapormusic/node-upnp-device-client.git#371819a856573e3624768bd0a113ac6dc084053d
+      upnp-device-client: https://github.com/vapormusic/node-upnp-device-client.git#371819a856573e3624768bd0a113ac6dc084053d
     transitivePeerDependencies:
       - supports-color
 
