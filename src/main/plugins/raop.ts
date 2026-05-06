@@ -128,11 +128,11 @@ export default class RAOP {
         //   this.devices.push(host_name);
         // }
         if (shown_name) {
-          this._win.webContents.executeJavaScript(`console.log('deviceFound','ip: ${host_name} name:${shown_name}')`).catch((err: any) => console.error(err));
+          this._win.webContents.executeJavaScript(`console.log('deviceFound','ip: ${host_name} name:${shown_name}').catch(e => console.error("[executeJavaScript] Error:", e))`).catch((err: any) => console.error(err));
           console.log("deviceFound", host_name, shown_name);
         }
       } else {
-        this._win.webContents.executeJavaScript(`console.log('deviceFound (added)','ip: ${host_name} name:${shown_name}')`).catch((err: any) => console.error(err));
+        this._win.webContents.executeJavaScript(`console.log('deviceFound (added).catch(e => console.error("[executeJavaScript] Error:", e))','ip: ${host_name} name:${shown_name}')`).catch((err: any) => console.error(err));
         console.log("deviceFound (added)", host_name, shown_name);
       }
     }
@@ -257,23 +257,23 @@ export default class RAOP {
           console.log("device status", status);
           if (status == "ready") {
             this._win.webContents.setAudioMuted(true);
-            this._win.webContents.executeJavaScript(`CiderAudio.sendAudio()`).catch((err: any) => console.error(err));
+            this._win.webContents.executeJavaScript(`CiderAudio.sendAudio().catch(e => console.error("[executeJavaScript] Error:", e))`).catch((err: any) => console.error(err));
           }
           if (status == "need_password") {
-            this._win.webContents.executeJavaScript(`app.setAirPlayCodeUI('${this.devices[idx].id}')`);
+            this._win.webContents.executeJavaScript(`app.setAirPlayCodeUI('${this.devices[idx].id}').catch(e => console.error("[executeJavaScript] Error:", e))`);
           }
           if (status == "pair_success") {
-            this._win.webContents.executeJavaScript(`app.sendAirPlaySuccess(${silent},'${this.devices[idx].id}')`);
+            this._win.webContents.executeJavaScript(`app.sendAirPlaySuccess(${silent},'${this.devices[idx].id}').catch(e => console.error("[executeJavaScript] Error:", e))`);
           }
           if (status == "pair_failed") {
-            this._win.webContents.executeJavaScript(`app.sendAirPlayFailed()`);
+            this._win.webContents.executeJavaScript(`app.sendAirPlayFailed().catch(e => console.error("[executeJavaScript] Error:", e))`);
             this.disconnectAirplay(this.devices[idx].id);
           }
           if (status == "stopped") {
             // this.airtunes.stopAll(() => {
             //   console.log("end");
             // });
-            if (this.devices[idx]?.state != null && this.devices[idx].state != -1) this._win.webContents.executeJavaScript(`app.airplayDisconnect(true, ${JSON.stringify([ipv4, ipport, sepassword, title, artist, album, artworkURL, txt, airplay2dv])})`).catch((err: any) => console.error(err));
+            if (this.devices[idx]?.state != null && this.devices[idx].state != -1) this._win.webContents.executeJavaScript(`app.airplayDisconnect(true, ${JSON.stringify([ipv4, ipport, sepassword, title, artist, album, artworkURL, txt, airplay2dv]).catch(e => console.error("[executeJavaScript] Error:", e))})`).catch((err: any) => console.error(err));
             // this.airtunes = null;
             // this.device = null;
             // this.ipairplay = "";
@@ -387,7 +387,7 @@ export default class RAOP {
   private disconnectAirplay(identifier: any = "") {
     console.log("awdas");
     this._win.webContents
-      .executeJavaScript(`app.airplayDisconnect(false, [], '${identifier}')`)
+      .executeJavaScript(`app.airplayDisconnect(false, [], '${identifier}').catch(e => console.error("[executeJavaScript] Error:", e))`)
       .then(() => {
         if (identifier == "") {
           if (this.airtunes) {

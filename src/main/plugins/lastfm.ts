@@ -100,7 +100,7 @@ export default class lastfm {
       if (err) {
         console.error(`[${lastfm.name}:authenticate] Error: ${typeof err === "string" ? err : err.message}`);
 
-        this._utils.getWindow().webContents.executeJavaScript(`app.notyf.error("${err.message}");`);
+        this._utils.getWindow().webContents.executeJavaScript(`app.notyf.error("${err.message}").catch(e => console.error("[executeJavaScript] Error:", e));`);
         return;
       }
       this._utils.getWindow().webContents.send("lastfm:authenticated", session);

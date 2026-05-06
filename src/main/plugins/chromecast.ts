@@ -106,11 +106,11 @@ export default class ChromecastPlugin {
         this.devices.push(host);
       }
       if (name) {
-        this._win.webContents.executeJavaScript(`console.log('deviceFound','ip: ${host} name:${name}')`).catch((err: any) => console.error(err));
+        this._win.webContents.executeJavaScript(`console.log('deviceFound','ip: ${host} name:${name}').catch(e => console.error("[executeJavaScript] Error:", e))`).catch((err: any) => console.error(err));
         console.log("deviceFound", host, name);
       }
     } else {
-      this._win.webContents.executeJavaScript(`console.log('deviceFound (added)','ip: ${host} name:${name}')`).catch((err: any) => console.error(err));
+      this._win.webContents.executeJavaScript(`console.log('deviceFound (added).catch(e => console.error("[executeJavaScript] Error:", e))','ip: ${host} name:${name}')`).catch((err: any) => console.error(err));
       console.log("deviceFound (added)", host, name);
     }
   }
@@ -348,7 +348,7 @@ export default class ChromecastPlugin {
   onNowPlayingItemDidChange(attributes: any): void { }
 
   onRendererReady(): void {
-    this._win.webContents.executeJavaScript(`ipcRenderer.sendSync('get-port')`).then((result: any) => {
+    this._win.webContents.executeJavaScript(`ipcRenderer.sendSync('get-port').catch(e => console.error("[executeJavaScript] Error:", e))`).then((result: any) => {
       this.ciderPort = result;
     });
   }

@@ -542,27 +542,27 @@ export class BrowserWindow {
       const action = req.params.action;
       switch (action) {
         case "playpause":
-          BrowserWindow.win.webContents.executeJavaScript("wsapi.togglePlayPause()");
+          BrowserWindow.win.webContents.executeJavaScript("wsapi.togglePlayPause().catch(e => console.error("[executeJavaScript] Error:", e))");
           res.send("Play/Pause toggle");
           break;
         case "play":
-          BrowserWindow.win.webContents.executeJavaScript("MusicKit.getInstance().play()");
+          BrowserWindow.win.webContents.executeJavaScript("MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).play()");
           res.send("Playing");
           break;
         case "pause":
-          BrowserWindow.win.webContents.executeJavaScript("MusicKit.getInstance().pause()");
+          BrowserWindow.win.webContents.executeJavaScript("MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).pause()");
           res.send("Paused");
           break;
         case "stop":
-          BrowserWindow.win.webContents.executeJavaScript("MusicKit.getInstance().stop()");
+          BrowserWindow.win.webContents.executeJavaScript("MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).stop()");
           res.send("Stopped");
           break;
         case "next":
-          BrowserWindow.win.webContents.executeJavaScript("if (MusicKit.getInstance().queue.nextPlayableItemIndex != -1 && MusicKit.getInstance().queue.nextPlayableItemIndex != null) {MusicKit.getInstance().changeToMediaAtIndex(MusicKit.getInstance().queue.nextPlayableItemIndex);}");
+          BrowserWindow.win.webContents.executeJavaScript("if (MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).queue.nextPlayableItemIndex != -1 && MusicKit.getInstance().queue.nextPlayableItemIndex != null) {MusicKit.getInstance().changeToMediaAtIndex(MusicKit.getInstance().queue.nextPlayableItemIndex);}");
           res.send("Next");
           break;
         case "previous":
-          BrowserWindow.win.webContents.executeJavaScript("if (MusicKit.getInstance().queue.previousPlayableItemIndex != -1 && MusicKit.getInstance().queue.previousPlayableItemIndex != null) {MusicKit.getInstance().changeToMediaAtIndex(MusicKit.getInstance().queue.previousPlayableItemIndex);}");
+          BrowserWindow.win.webContents.executeJavaScript("if (MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).queue.previousPlayableItemIndex != -1 && MusicKit.getInstance().queue.previousPlayableItemIndex != null) {MusicKit.getInstance().changeToMediaAtIndex(MusicKit.getInstance().queue.previousPlayableItemIndex);}");
           res.send("Previous");
           break;
         default: {
@@ -714,7 +714,7 @@ export class BrowserWindow {
       if (details.url === "https://buy.itunes.apple.com/account/web/info") {
         details.requestHeaders["sec-fetch-site"] = "same-site";
         details.requestHeaders["DNT"] = "1";
-        let itspod = await BrowserWindow.win.webContents.executeJavaScript(`window.localStorage.getItem("music.ampwebplay.itspod")`);
+        let itspod = await BrowserWindow.win.webContents.executeJavaScript(`window.localStorage.getItem("music.ampwebplay.itspod").catch(e => console.error("[executeJavaScript] Error:", e))`);
         if (itspod != null) details.requestHeaders["Cookie"] = `itspod=${itspod}`;
       }
       if (details.url.includes("apple.com")) {
@@ -1479,42 +1479,51 @@ export class BrowserWindow {
 
       // on content loaded
       authWindow.webContents.on("did-finish-load", () => {
+        authWindow.show();
         authWindow.webContents.executeJavaScript(`
-      let tOut = setInterval(async ()=>{
-        try {
-          if(typeof MusicKit === 'undefined') return;
-          MusicKit.getInstance().addEventListener(MusicKit.Events.authorizationStatusDidChange, ()=>{
-            if(MusicKit.getInstance().isAuthorized) {
-              ipcRenderer.send('auth-completed')
-            }
-          })
-          clearInterval(tOut)
-        }catch(e) {}
-      }, 500)
       let tOut2 = setInterval(()=>{
         try {
           const el = document.querySelector('.signin')
           if(el) {
             el.click()
-            ipcRenderer.send('auth-window-ready')
             clearInterval(tOut2)
           }
         }catch(e) {}
       }, 500)
-      let styling = \`${overlayStyling}\`;
-      (()=>{
+      try {
+        let styling = \`${overlayStyling}\`;
         const titleBarEl = document.createElement('div')
         const overlayEl = document.createElement('div')
         titleBarEl.classList.add('titlebar')
         overlayEl.classList.add('hehehe')
         const styleTag = document.createElement('style')
         styleTag.innerHTML = styling
-        document.head.appendChild(styleTag)
-        document.body.appendChild(overlayEl)
-        document.body.appendChild(titleBarEl)
-      })()
-    `);
+        if (document.head) document.head.appendChild(styleTag)
+        if (document.body) {
+          document.body.appendChild(overlayEl)
+          document.body.appendChild(titleBarEl)
+        }
+      } catch (e) {}
+    `).catch((err) => console.error("Auth script error:", err));
       });
+
+      const checkAuthInterval = setInterval(async () => {
+        if (authWindow.isDestroyed()) {
+          clearInterval(checkAuthInterval);
+          return;
+        }
+        try {
+          const cookies = await getCookies();
+          if (cookies["music.ampwebplay.media-user-token"]) {
+            console.log("Auth completed, cookies acquired");
+            win.webContents.send("recv-cookies", cookies);
+            clearInterval(checkAuthInterval);
+            authWindow.close();
+          }
+        } catch (e) {
+          console.error("Error checking cookies:", e);
+        }
+      }, 1000);
 
       async function getCookies(): Promise<{ [key: string]: string }> {
         return new Promise((res, rej) => {
@@ -1587,11 +1596,11 @@ export class BrowserWindow {
       } else if (isMaximized && state !== WND_STATE.MAXIMIZED) {
         wndState = WND_STATE.MAXIMIZED;
         win.webContents.send("window-state-changed", "maximized");
-        win.webContents.executeJavaScript(`app.chrome.maximized = true`);
+        win.webContents.executeJavaScript(`app.chrome.maximized = true`).catch(e => console.error("[executeJavaScript] Error:", e));
       } else if (state !== WND_STATE.NORMAL) {
         wndState = WND_STATE.NORMAL;
         win.webContents.send("window-state-changed", "normal");
-        win.webContents.executeJavaScript(`app.chrome.maximized = false`);
+        win.webContents.executeJavaScript(`app.chrome.maximized = false`).catch(e => console.error("[executeJavaScript] Error:", e));
       }
     });
 

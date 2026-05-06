@@ -99,7 +99,7 @@ const wsapi = {
     request[type] = id;
     MusicKit.getInstance().playLater(request);
   },
-  love() {},
+  love() { },
   playTrackById(id, kind = "song") {
     MusicKit.getInstance()
       .setQueue({ [kind]: id, parameters: { l: app.mklang } })

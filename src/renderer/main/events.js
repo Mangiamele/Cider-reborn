@@ -89,10 +89,10 @@ const Events = {
 
     // Hang Timer
     app.hangtimer = setTimeout(() => {
-      if (confirm("Cider is not responding. Reload the app?")) {
+      if (confirm("Cider is taking a long time to load. Reload the app?")) {
         window.location.reload();
       }
-    }, 10000);
+    }, 60000);
 
     // Refresh Focus
     function refreshFocus() {

@@ -69,10 +69,10 @@ export default class mpris {
     player.on("pause", () => mpris.utils.playback.pause());
     player.on("quit", () => mpris.utils.getApp().exit());
     player.on("position", (args: { position: any }) => mpris.utils.playback.seek(args.position / 1000 / 1000));
-    player.on("loopStatus", (status: string) => renderer.executeJavaScript(`app.mk.repeatMode = ${loopType[status.toLowerCase()]}`));
-    player.on("shuffle", () => renderer.executeJavaScript("app.mk.shuffleMode = (app.mk.shuffleMode === 0) ? 1 : 0"));
+    player.on("loopStatus", (status: string) => renderer.executeJavaScript(`app.mk.repeatMode = ${loopType[status.toLowerCase().catch(e => console.error("[executeJavaScript] Error:", e))]}`));
+    player.on("shuffle", () => renderer.executeJavaScript("app.mk.shuffleMode = (app.mk.shuffleMode === 0).catch(e => console.error("[executeJavaScript] Error:", e)) ? 1 : 0"));
     player.on("volume", (volume: string) => {
-      renderer.executeJavaScript(`app.mk.volume = ${parseFloat(volume)}`);
+      renderer.executeJavaScript(`app.mk.volume = ${parseFloat(volume).catch(e => console.error("[executeJavaScript] Error:", e))}`);
     });
     player.on("raise", () => {
       mpris.utils.getWindow().show();

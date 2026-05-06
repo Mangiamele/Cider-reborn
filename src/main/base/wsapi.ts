@@ -134,111 +134,111 @@ export class wsapi {
             };
             break;
           case "play-next":
-            this._win.webContents.executeJavaScript(`wsapi.playNext(\`${data.type}\`,\`${data.id}\`)`);
+            this._win.webContents.executeJavaScript(`wsapi.playNext(\`${data.type}\`,\`${data.id}\`).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Play Next";
             break;
           case "play-later":
-            this._win.webContents.executeJavaScript(`wsapi.playLater(\`${data.type}\`,\`${data.id}\`)`);
+            this._win.webContents.executeJavaScript(`wsapi.playLater(\`${data.type}\`,\`${data.id}\`).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Play Later";
             break;
           case "quick-play":
-            this._win.webContents.executeJavaScript(`wsapi.quickPlay(\`${data.term}\`)`);
+            this._win.webContents.executeJavaScript(`wsapi.quickPlay(\`${data.term}\`).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Quick Play";
             break;
           case "get-lyrics":
-            this._win.webContents.executeJavaScript(`wsapi.getLyrics()`);
+            this._win.webContents.executeJavaScript(`wsapi.getLyrics().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "shuffle":
-            this._win.webContents.executeJavaScript(`wsapi.toggleShuffle()`);
+            this._win.webContents.executeJavaScript(`wsapi.toggleShuffle().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "set-shuffle":
             if (data.shuffle == true) {
-              this._win.webContents.executeJavaScript(`MusicKit.getInstance().shuffleMode = 1`);
+              this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).shuffleMode = 1`);
             } else {
-              this._win.webContents.executeJavaScript(`MusicKit.getInstance().shuffleMode = 0`);
+              this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).shuffleMode = 0`);
             }
             break;
           case "repeat":
-            this._win.webContents.executeJavaScript(`wsapi.toggleRepeat()`);
+            this._win.webContents.executeJavaScript(`wsapi.toggleRepeat().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "set-repeat":
             if (data.repeat === 0 || data.repeat === 1 || data.repeat === 2) {
-              this._win.webContents.executeJavaScript(`MusicKit.getInstance().repeatMode = ${data.repeat}`);
+              this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).repeatMode = ${data.repeat}`);
               response.message = "Repeat " + data.repeat;
             } else {
-              this._win.webContents.executeJavaScript(`wsapi.toggleRepeat()`);
+              this._win.webContents.executeJavaScript(`wsapi.toggleRepeat().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
               response.message = "Invalid Repeat, toggling";
             }
             break;
           case "seek":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().seekToTime(${parseFloat(data.time)})`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).seekToTime(${parseFloat(data.time)})`);
             response.message = "Seek";
             break;
           case "pause":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().pause()`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).pause()`);
             response.message = "Paused";
             break;
           case "playpause":
-            this._win.webContents.executeJavaScript(`MusicKitInterop.playPause()`);
+            this._win.webContents.executeJavaScript(`MusicKitInterop.playPause().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Play/Pause";
             break;
           case "play":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().play()`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).play()`);
             response.message = "Playing";
             break;
           case "stop":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().stop()`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).stop()`);
             response.message = "Stopped";
             break;
           case "volumeMax":
-            this._win.webContents.executeJavaScript(`wsapi.getmaxVolume()`);
+            this._win.webContents.executeJavaScript(`wsapi.getmaxVolume().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "maxVolume";
             break;
           case "volume":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().volume = ${parseFloat(data.volume)}`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).volume = ${parseFloat(data.volume)}`);
             response.message = "Volume";
             break;
           case "mute":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().mute()`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).mute()`);
             response.message = "Muted";
             break;
           case "unmute":
-            this._win.webContents.executeJavaScript(`MusicKit.getInstance().unmute()`);
+            this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e))).unmute()`);
             response.message = "Unmuted";
             break;
           case "next":
-            this._win.webContents.executeJavaScript(`MusicKitInterop.next()`);
+            this._win.webContents.executeJavaScript(`MusicKitInterop.next().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Next";
             break;
           case "previous":
-            this._win.webContents.executeJavaScript(`MusicKitInterop.previous()`);
+            this._win.webContents.executeJavaScript(`MusicKitInterop.previous().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Previous";
             break;
           case "musickit-api":
-            this._win.webContents.executeJavaScript(`wsapi.musickitApi(\`${data.method}\`, \`${data.id}\`, ${JSON.stringify(data.params)} , ${data.library})`);
+            this._win.webContents.executeJavaScript(`wsapi.musickitApi(\`${data.method}\`, \`${data.id}\`, ${JSON.stringify(data.params).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))} , ${data.library})`);
             break;
           case "musickit-library-api":
             break;
           case "set-autoplay":
-            this._win.webContents.executeJavaScript(`wsapi.setAutoplay(${data.autoplay})`);
+            this._win.webContents.executeJavaScript(`wsapi.setAutoplay(${data.autoplay}).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "queue-move":
-            this._win.webContents.executeJavaScript(`wsapi.moveQueueItem(${data.from},${data.to})`);
+            this._win.webContents.executeJavaScript(`wsapi.moveQueueItem(${data.from},${data.to}).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "get-queue":
-            this._win.webContents.executeJavaScript(`wsapi.getQueue()`);
+            this._win.webContents.executeJavaScript(`wsapi.getQueue().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "search":
             if (!data.limit) {
               data.limit = 10;
             }
-            this._win.webContents.executeJavaScript(`wsapi.search(\`${data.term}\`, \`${data.limit}\`)`);
+            this._win.webContents.executeJavaScript(`wsapi.search(\`${data.term}\`, \`${data.limit}\`).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "library-search":
             if (!data.limit) {
               data.limit = 10;
             }
-            this._win.webContents.executeJavaScript(`wsapi.searchLibrary(\`${data.term}\`, \`${data.limit}\`)`);
+            this._win.webContents.executeJavaScript(`wsapi.searchLibrary(\`${data.term}\`, \`${data.limit}\`).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "show-window":
             this._win.show();
@@ -247,7 +247,7 @@ export class wsapi {
             this._win.hide();
             break;
           case "play-mediaitem":
-            this._win.webContents.executeJavaScript(`wsapi.playTrackById("${data.id}", \`${data.kind}\`)`);
+            this._win.webContents.executeJavaScript(`wsapi.playTrackById("${data.id}", \`${data.kind}\`).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             response.message = "Playing track";
             break;
           case "get-status":
@@ -257,16 +257,16 @@ export class wsapi {
             response.message = "Status";
             break;
           case "get-currentmediaitem":
-            this._win.webContents.executeJavaScript(`wsapi.getPlaybackState()`);
+            this._win.webContents.executeJavaScript(`wsapi.getPlaybackState().catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "library-status":
-            this._win.webContents.executeJavaScript(`wsapi.getLibraryStatus("${data.type}", "${data.id}")`);
+            this._win.webContents.executeJavaScript(`wsapi.getLibraryStatus("${data.type}", "${data.id}").catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "rating":
-            this._win.webContents.executeJavaScript(`wsapi.rate("${data.type}", "${data.id}", ${data.rating})`);
+            this._win.webContents.executeJavaScript(`wsapi.rate("${data.type}", "${data.id}", ${data.rating}).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "change-library":
-            this._win.webContents.executeJavaScript(`wsapi.changeLibrary("${data.type}", "${data.id}", ${data.add})`);
+            this._win.webContents.executeJavaScript(`wsapi.changeLibrary("${data.type}", "${data.id}", ${data.add}).catch(e => console.error("[WSAPI] executeJavaScript Error:", e).catch(e => console.error("[executeJavaScript] Error:", e)))`);
             break;
           case "quit":
             electron.app.quit();
@@ -277,7 +277,7 @@ export class wsapi {
 
       ws.on("close", () => {
         // remove client from list
-        this.clients.splice(wsapi.clients.indexOf(ws), 1);
+        this.clients.splice(this.clients.indexOf(ws), 1);
         console.log(`Client ${ws.id} disconnected`);
       });
       ws.send(JSON.stringify(defaultResponse));

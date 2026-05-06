@@ -174,15 +174,15 @@ export class AppEvents {
         console.log("token: ", authURI.split("lastfm?token=")[1]);
         utils
           .getWindow()
-          .webContents.executeJavaScript(`ipcRenderer.send('lastfm:auth', ${JSON.stringify(authURI.split("lastfm?token=")[1])})`)
+          .webContents.executeJavaScript(`ipcRenderer.send('lastfm:auth', ${JSON.stringify(authURI.split("lastfm?token=").catch(e => console.error("[executeJavaScript] Error:", e))[1])})`)
           .catch(console.error);
       }
     } else if (arg.includes("playpause")) {
       //language=JS
-      utils.getWindow().webContents.executeJavaScript("MusicKitInterop.playPause()");
+      utils.getWindow().webContents.executeJavaScript("MusicKitInterop.playPause().catch(e => console.error("[executeJavaScript] Error:", e))");
     } else if (arg.includes("nextitem")) {
       //language=JS
-      utils.getWindow().webContents.executeJavaScript("app.mk.skipToNextItem()");
+      utils.getWindow().webContents.executeJavaScript("app.mk.skipToNextItem().catch(e => console.error("[executeJavaScript] Error:", e))");
     }
     // Play
     else if (arg.includes("/play/")) {
@@ -221,7 +221,7 @@ export class AppEvents {
     } else if (arg.includes("/beep")) {
       shell.beep();
     } else {
-      utils.getWindow().webContents.executeJavaScript(`app.appRoute(${JSON.stringify(arg.split("//")[1])})`);
+      utils.getWindow().webContents.executeJavaScript(`app.appRoute(${JSON.stringify(arg.split("//").catch(e => console.error("[executeJavaScript] Error:", e))[1])})`);
     }
   }
 
@@ -360,7 +360,7 @@ export class AppEvents {
         visible: !visible,
         label: this.i18n["term.playpause"],
         click: () => {
-          utils.getWindow().webContents.executeJavaScript("MusicKitInterop.playPause()");
+          utils.getWindow().webContents.executeJavaScript("MusicKitInterop.playPause().catch(e => console.error("[executeJavaScript] Error:", e))");
         },
       },
 
@@ -368,7 +368,7 @@ export class AppEvents {
         visible: !visible,
         label: this.i18n["term.next"],
         click: () => {
-          utils.getWindow().webContents.executeJavaScript(`MusicKitInterop.next()`);
+          utils.getWindow().webContents.executeJavaScript(`MusicKitInterop.next().catch(e => console.error("[executeJavaScript] Error:", e))`);
         },
       },
 
@@ -376,7 +376,7 @@ export class AppEvents {
         visible: !visible,
         label: this.i18n["term.previous"],
         click: () => {
-          utils.getWindow().webContents.executeJavaScript(`MusicKitInterop.previous()`);
+          utils.getWindow().webContents.executeJavaScript(`MusicKitInterop.previous().catch(e => console.error("[executeJavaScript] Error:", e))`);
         },
       },
 

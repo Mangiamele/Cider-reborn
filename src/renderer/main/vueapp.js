@@ -866,11 +866,15 @@ const app = new Vue({
       if (this.cfg.visual.hw_acceleration == "disabled") {
         document.body.classList.add("no-gpu");
       }
-      this.mk._services.timing.mode = 0;
+      try {
+        this.mk._services.timing.mode = 0;
+      } catch (e) {}
       this.platform = this.cfg.main.PLATFORM;
 
       this.mklang = await this.MKJSLang();
-      this.mk._playbackController._storekit.overrideRestrictEnabled(false);
+      try {
+        this.mk._playbackController._storekit.overrideRestrictEnabled(false);
+      } catch (e) {}
       try {
         // Set profile name
         this.chrome.userinfo = (await app.mk.api.v3.music(`/v1/me/social-profile`)).data.data[0];
@@ -883,9 +887,11 @@ const app = new Vue({
       // Used to get a scale factor for the window for CSS scaling
       window.addEventListener("resize", (e) => this.setWindowScaleFactor());
       this.setWindowScaleFactor();
-      this.mk._bag.features["seamless-audio-transitions"] = this.cfg.audio.seamless_audio;
-      this.mk._bag.features["broadcast-radio"] = true;
-      this.mk._services.apiManager.store.storekit._restrictedEnabled = false;
+      try {
+        this.mk._bag.features["seamless-audio-transitions"] = this.cfg.audio.seamless_audio;
+        this.mk._bag.features["broadcast-radio"] = true;
+        this.mk._services.apiManager.store.storekit._restrictedEnabled = false;
+      } catch (e) {}
       // API Fallback
       if (!this.chrome.userinfo) {
         this.chrome.userinfo = {
@@ -924,12 +930,14 @@ const app = new Vue({
         this.library.albums.displayListing = this.library.albums.listing;
       }
 
-      if (typeof MusicKit.PlaybackBitrate[app.cfg.audio.quality] !== "string") {
-        app.mk.bitrate = MusicKit.PlaybackBitrate[app.cfg.audio.quality];
-      } else {
-        app.mk.bitrate = 256;
-        app.cfg.audio.quality = "HIGH";
-      }
+      try {
+        if (MusicKit.PlaybackBitrate && typeof MusicKit.PlaybackBitrate[app.cfg.audio.quality] !== "string") {
+          app.mk.bitrate = MusicKit.PlaybackBitrate[app.cfg.audio.quality];
+        } else {
+          app.mk.bitrate = 256;
+          app.cfg.audio.quality = "HIGH";
+        }
+      } catch (e) {}
 
       switch (this.cfg.general.resumeOnStartupBehavior) {
         default:

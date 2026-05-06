@@ -16,22 +16,22 @@ export class utils {
    */
   static playback = {
     pause: () => {
-      bw.win.webContents.executeJavaScript("MusicKitInterop.pause()");
+      bw.win.webContents.executeJavaScript("MusicKitInterop.pause().catch(e => console.error("[executeJavaScript] Error:", e))");
     },
     play: () => {
-      bw.win.webContents.executeJavaScript("MusicKitInterop.play()");
+      bw.win.webContents.executeJavaScript("MusicKitInterop.play().catch(e => console.error("[executeJavaScript] Error:", e))");
     },
     playPause: () => {
-      bw.win.webContents.executeJavaScript("MusicKitInterop.playPause()");
+      bw.win.webContents.executeJavaScript("MusicKitInterop.playPause().catch(e => console.error("[executeJavaScript] Error:", e))");
     },
     next: () => {
-      bw.win.webContents.executeJavaScript("MusicKitInterop.next()");
+      bw.win.webContents.executeJavaScript("MusicKitInterop.next().catch(e => console.error("[executeJavaScript] Error:", e))");
     },
     previous: () => {
-      bw.win.webContents.executeJavaScript("MusicKitInterop.previous()");
+      bw.win.webContents.executeJavaScript("MusicKitInterop.previous().catch(e => console.error("[executeJavaScript] Error:", e))");
     },
     seek: (seconds: number) => {
-      bw.win.webContents.executeJavaScript(`MusicKit.getInstance().seekToTime(${seconds})`);
+      bw.win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).seekToTime(${seconds})`);
     },
   };
   /**
@@ -188,6 +188,6 @@ export class utils {
   static loadPluginFrontend(path: string): void {}
 
   static loadJSFrontend(path: string): void {
-    bw.win.webContents.executeJavaScript(readFileSync(path, "utf8"));
+    bw.win.webContents.executeJavaScript(readFileSync(path, "utf8").catch(e => console.error("[executeJavaScript] Error:", e)));
   }
 }

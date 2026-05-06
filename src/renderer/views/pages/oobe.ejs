@@ -150,11 +150,15 @@
                 Sign in with Apple Music
             </div>
             <div class="oobe-body">
-                <div class="blurb"></div>
+                <div class="blurb">
+                    <div class="md-btn md-btn-primary" @click="$root.ipcRenderer.send('auth-window')">
+                        Open Login Window
+                    </div>
+                </div>
             </div>
             <div class="oobe-footer">
                 <div class="btn-group">
-                    <div class="md-btn" @click="app.appMode ='player'">{{ getLz("oobe.done") }}</div>
+                    <div class="md-btn" @click="$root.appMode = 'player'">{{ getLz("oobe.done") }}</div>
                 </div>
             </div>
         </div>
@@ -184,6 +188,7 @@
           window.location.reload()
         }
         this.screen = "signin";
+        this.$root.ipcRenderer.send('auth-window');
         capiInit();
 
       },

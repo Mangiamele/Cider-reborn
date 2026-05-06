@@ -113,25 +113,25 @@ export default class WebNowPlaying {
     try {
       switch (eventName) {
         case "playpause":
-          this._win.webContents.executeJavaScript("MusicKitInterop.playPause()").catch(console.error);
+          this._win.webContents.executeJavaScript("MusicKitInterop.playPause().catch(e => console.error("[executeJavaScript] Error:", e))").catch(console.error);
           break;
         case "next":
-          this._win.webContents.executeJavaScript("MusicKitInterop.next()").catch(console.error);
+          this._win.webContents.executeJavaScript("MusicKitInterop.next().catch(e => console.error("[executeJavaScript] Error:", e))").catch(console.error);
           break;
         case "previous":
-          this._win.webContents.executeJavaScript("MusicKitInterop.previous()").catch(console.error);
+          this._win.webContents.executeJavaScript("MusicKitInterop.previous().catch(e => console.error("[executeJavaScript] Error:", e))").catch(console.error);
           break;
         case "setposition":
-          this._win.webContents.executeJavaScript(`MusicKit.getInstance().seekToTime(${parseFloat(value)})`);
+          this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).seekToTime(${parseFloat(value)})`);
           break;
         case "setvolume":
-          this._win.webContents.executeJavaScript(`MusicKit.getInstance().volume = ${parseFloat(value) / 100}`);
+          this._win.webContents.executeJavaScript(`MusicKit.getInstance().catch(e => console.error("[executeJavaScript] Error:", e)).volume = ${parseFloat(value) / 100}`);
           break;
         case "repeat":
-          this._win.webContents.executeJavaScript("wsapi.toggleRepeat()").catch(console.error);
+          this._win.webContents.executeJavaScript("wsapi.toggleRepeat().catch(e => console.error("[executeJavaScript] Error:", e))").catch(console.error);
           break;
         case "shuffle":
-          this._win.webContents.executeJavaScript("wsapi.toggleShuffle()").catch(console.error);
+          this._win.webContents.executeJavaScript("wsapi.toggleShuffle().catch(e => console.error("[executeJavaScript] Error:", e))").catch(console.error);
           break;
         case "togglethumbsup":
           // not implemented
